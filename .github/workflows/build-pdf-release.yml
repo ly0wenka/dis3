@@ -1,0 +1,32 @@
+name: Build PDF (Release)
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build PDF
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: dissertation.tex
+          latexmk_use_xelatex: true
+          args: -interaction=nonstopmode -file-line-error -halt-on-error -outdir=out
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dissertation-pdf
+          path: out/dissertation.pdf
+
+      - name: Attach PDF to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: out/dissertation.pdf
