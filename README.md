@@ -30,3 +30,11 @@ By default this converts `dis_K_100.docx` → `dissertation.pandoc.tex` and extr
 - If `pandoc` is already installed and on `PATH`, the script uses it.
 - Otherwise it downloads a portable pandoc build into `tools\pandoc\` (gitignored).
 - You can also set `PANDOC_PATH` to point to your pandoc executable.
+
+## Build/test LaTeX locally
+
+```powershell
+.\test_latex_build.ps1 -InstallMiKTeX
+```
+
+This builds `dissertation.tex` with XeLaTeX via `latexmk` and writes the PDF to `out\`.
