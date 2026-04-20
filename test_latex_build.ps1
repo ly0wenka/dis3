@@ -13,7 +13,40 @@ function Have-Command([string]$name) {
   return $null -ne (Get-Command $name -ErrorAction SilentlyContinue)
 }
 
+function Add-ToPathIfMissing([string]$dir) {
+  if (-not $dir) { return }
+  if (-not (Test-Path -LiteralPath $dir)) { return }
+  $parts = ($env:PATH -split ';') | Where-Object { $_ -ne '' }
+  if ($parts -contains $dir) { return }
+  $env:PATH = ($dir + ';' + $env:PATH)
+}
+
+function Try-UseMiKTeXBin() {
+  $candidateDirs = @(
+    "$env:LOCALAPPDATA\\Programs\\MiKTeX\\miktex\\bin\\x64",
+    "$env:LOCALAPPDATA\\Programs\\MiKTeX\\miktex\\bin",
+    "$env:ProgramFiles\\MiKTeX\\miktex\\bin\\x64",
+    "$env:ProgramFiles\\MiKTeX\\miktex\\bin",
+    "$env:ProgramFiles(x86)\\MiKTeX\\miktex\\bin\\x64",
+    "$env:ProgramFiles(x86)\\MiKTeX\\miktex\\bin"
+  )
+
+  foreach ($dir in $candidateDirs) {
+    if (-not $dir) { continue }
+    if (-not (Test-Path -LiteralPath $dir)) { continue }
+    $latexmk = Join-Path $dir "latexmk.exe"
+    if (Test-Path -LiteralPath $latexmk) {
+      Add-ToPathIfMissing $dir
+      return $true
+    }
+  }
+
+  return $false
+}
+
 function Ensure-MiKTeX() {
+  if (Have-Command latexmk) { return }
+  if (Try-UseMiKTeXBin) { return }
   if (Have-Command latexmk) { return }
 
   if (-not $InstallMiKTeX) {
@@ -43,6 +76,9 @@ if (-not (Test-Path -LiteralPath $texPath)) {
 }
 
 Ensure-MiKTeX
+if (-not (Have-Command latexmk) -and (Try-UseMiKTeXBin)) {
+  # PATH adjusted, re-check below
+}
 
 New-Item -ItemType Directory -Force -Path (Join-Path $repoRoot $OutDir) | Out-Null
 
