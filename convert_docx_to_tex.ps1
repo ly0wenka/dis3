@@ -184,7 +184,8 @@ if (-not $OutputTex) {
 $texPath = Get-FullPath $OutputTex $repoRoot
 
 if (-not $MediaDir) {
-  $MediaDir = Join-Path $repoRoot "media"
+  # Use repo root so pandoc writes ./media/<files> (instead of media/media/<files>)
+  $MediaDir = $repoRoot
 }
 $mediaPath = Get-FullPath $MediaDir $repoRoot
 

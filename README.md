@@ -31,6 +31,8 @@ By default this converts `dis_K_100.docx` → `dissertation.pandoc.tex` and extr
 - Otherwise it downloads a portable pandoc build into `tools\pandoc\` (gitignored).
 - You can also set `PANDOC_PATH` to point to your pandoc executable.
 
+Note: the converter extracts images to `.\media\...` (so LaTeX references like `media/image2.png` work).
+
 ## Build/test LaTeX locally
 
 ```powershell
