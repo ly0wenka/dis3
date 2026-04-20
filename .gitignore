@@ -1,0 +1,17 @@
+tools/pandoc/
+media/
+out/
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+dissertation.pandoc.tex
