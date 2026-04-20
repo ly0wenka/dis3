@@ -22,7 +22,7 @@ function Ensure-MiKTeX() {
 
   if (Have-Command winget) {
     Write-Host "Installing MiKTeX via winget..." -ForegroundColor Cyan
-    & winget install --id MiKTeX.MiKTeX -e --source winget
+    & winget install --id MiKTeX.MiKTeX -e --source winget --accept-source-agreements --accept-package-agreements --disable-interactivity
     if ($LASTEXITCODE -ne 0) { throw "winget install failed with exit code $LASTEXITCODE" }
     return
   }
