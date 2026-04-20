@@ -1,5 +1,4 @@
 tools/pandoc/
-media/
 out/
 *.aux
 *.bbl
@@ -14,4 +13,7 @@ out/
 *.run.xml
 *.synctex.gz
 *.toc
-dissertation.pandoc.tex
+
+# If you want to commit pandoc outputs / extracted images, keep these unignored:
+# dissertation.pandoc.tex
+# media/
